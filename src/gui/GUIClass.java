@@ -48,7 +48,7 @@ public class GUIClass extends JFrame{
 
 		DecimalFormat df = new DecimalFormat("#.##");
 		NumberFormatter formatter = new NumberFormatter(df);
-		formatter.setAllowsInvalid(false);
+		//formatter.setAllowsInvalid(false);
 
 		
 		lblToValue.setText("");
@@ -88,14 +88,13 @@ public class GUIClass extends JFrame{
 		txtEuros.addKeyListener(new KeyListener(){
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if(Double.parseDouble(txtEuros.getText()) > 0 && !txtEuros.getText().isEmpty()){
-					setLabelText();
+				txtEuros.setText(txtEuros.getText().trim());
+				if(!txtEuros.getText().isEmpty()){
+					setLabelText();					
 				}
 			}
 

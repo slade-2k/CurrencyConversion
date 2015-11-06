@@ -28,7 +28,7 @@ public class ExchangeData {
 		this.getExchangeRates();
 		long now = System.currentTimeMillis() / 1000L;
 		long lastFetch = Long.parseLong(gsonData.timestamp);
-		if(now - lastFetch > 86400){
+		if(now - lastFetch > 3600){
 			this.setNewExchangeRates();
 		}
 
