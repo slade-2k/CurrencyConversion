@@ -6,7 +6,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -17,9 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.text.NumberFormatter;
 
+import main.ExchangeData;
 import main.MainClass;
 
 public class GUIClass extends JFrame{
+	private ExchangeData data;
 	
 	private JLabel lblTitle = new JLabel("CurrencyCalculator");
 	private JLabel lblToValue = new JLabel();
@@ -35,8 +36,9 @@ public class GUIClass extends JFrame{
 	
 	private MainClass mainClass;
 	
-	public GUIClass(MainClass mainClass){
+	public GUIClass(MainClass mainClass, ExchangeData data){
 		this.mainClass = mainClass;
+		this.data = data;
 		this.setSize(500, 100);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -61,8 +63,8 @@ public class GUIClass extends JFrame{
 		txtEuros.setPreferredSize(dTxtField);
 		txtEuros.setMaximumSize(dTxtField);
 		
-		cmbToRate	= new JComboBox(mainClass.readCountryCodes());
-		cmbBaseRate = new JComboBox(mainClass.readCountryCodes());
+		cmbToRate	= new JComboBox(data.getCountryCodes());
+		cmbBaseRate = new JComboBox(data.getCountryCodes());
 		
 		cmbBaseRate.addItemListener(new ItemListener(){
 			@Override

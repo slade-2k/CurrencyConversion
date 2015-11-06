@@ -2,7 +2,7 @@ package main;
 
 import java.util.HashMap;
 
-public class ExchangeRates {
+public class GsonData {
 	HashMap<String, Double> rates;
 	String timestamp;
 }
