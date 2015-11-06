@@ -14,45 +14,57 @@ import com.google.gson.Gson;
 
 public class ExchangeData {
 	
-	private GsonData exRate;
+	private GsonData gsonData;
 	private String[] countryCodes;
 	private HashMap<String, Double> data;
 	
 	public ExchangeData(){
-		exRate = new GsonData();
+		gsonData = new GsonData();
 	}
 	
 	public void checkData(){
-		this.setExchangeRates();  //Bedingungen setzen, hier wird entschieden ob neue Daten geladen werden oder die alten aktuell genug sind
+		this.setNewExchangeRates();  //Bedingungen setzen, hier wird entschieden ob neue Daten geladen werden oder die alten aktuell genug sind
+		this.setExchangeData();
 	}
 	
 	public void setExchangeData(/*HashMap<String, Double> currencyRates*/){     //Erstellt neue Datei aus den gezogenen Daten
 		try {
 			FileWriter fWriter = new FileWriter("data.txt");
 			BufferedWriter data = new BufferedWriter(fWriter);
-	//		data.write(timestamp);
+			data.write(gsonData.timestamp);
+			data.newLine();
+			for(String key : gsonData.rates.keySet()){
+				data.write(key +":"+ gsonData.rates.get(key));
+				data.newLine();
+			}
+			
 			data.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void setExchangeRates(){                                     //Holt sich die neuen Daten von Openexchangerates.org und speichert den String der durch readURL() erstellt wurde in die Hashmap exRate
+	public void setExchangeRates(){
+		
+	}
+	
+	public void setNewExchangeRates(){                                     //Holt sich die neuen Daten von Openexchangerates.org und speichert den String der durch readURL() erstellt wurde in die Hashmap exRate
 			Gson gson = new Gson();
 			String url = "https://openexchangerates.org/api/latest.json?app_id=b55158a06b514c378cca1bf1274f0c52";
 			String json = readURL(url);
-			exRate = gson.fromJson(json, GsonData.class);
-			data = exRate.rates;
-			this.setCountryCodes();
-	}
-	
-	public void setCountryCodes(){									//Liest die Abkürzungen aus dem KeySet der erstellten Hashmap
-		String[] countryCodes = exRate.rates.keySet().toArray(new String[exRate.rates.keySet().size()]);
-		this.countryCodes = countryCodes;
+			gsonData = gson.fromJson(json, GsonData.class);
+			data = gsonData.rates;   //Soll hier nicht hin! Daten sollen immer aus der Txt gelesen werden TBD!!!!!!
+			this.setCountryCodes();		//Das dementsprechend auch nicht
+			this.setExchangeData();
 	}
 	
 	public Double getExchangeData(String key){
 		return data.get(key);
+	}
+	
+	public void setCountryCodes(){									//Liest die Abkürzungen aus dem KeySet der erstellten Hashmap
+		String[] countryCodes = gsonData.rates.keySet().toArray(new String[gsonData.rates.keySet().size()]);
+		this.countryCodes = countryCodes;
 	}
 	
 	public String[] getCountryCodes(){
